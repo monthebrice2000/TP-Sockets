@@ -27,21 +27,28 @@ public class Client {
         OutputStream os = serverSoc.getOutputStream();
         DataOutputStream dos = new DataOutputStream( os );
         dos.writeUTF( body );
-        receiveReply();
+        receiveReply( body );
+        dos.close();
     }
 
-    public void receiveReply() throws IOException {
+    public void receiveReply( String fileName ) throws IOException {
+        File file = new File( fileName );
+        FileOutputStream fos = new FileOutputStream( file );
         InputStream is = serverSoc.getInputStream();
         DataInputStream dis = new DataInputStream( is );
-        String replyServer = dis.readUTF();
-        System.out.println( replyServer );
+        String data = dis.readUTF();
+        fos.write( data.getBytes() );
+        System.out.println( "Download File Success" );
+        fos.close();
+        dis.close();
     }
 
+
     public static void main( String[] argv ) throws IOException {
-        Client client = new Client("130.190.74.208", 4320);
+        Client client = new Client("10.188.207.110", 4320);
         try {
             client.connectToServer();
-            client.sendRequest( "MONTHE");
+            client.sendRequest( "index.txt");
         } catch (IOException e) {
             throw new IOException( e.getMessage() );
         }

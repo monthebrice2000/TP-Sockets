@@ -21,7 +21,7 @@ public class Server {
         while( true ){
             System.out.println( "Listening ....");
             Socket clientSoc = listenSoc.accept();
-            System.out.println(" Client was connected!!!");
+            System.out.println("One baby_step.Client was connected!!!");
             if( clientSoc != null ){
                 receiveRequest( clientSoc );
             }
@@ -32,26 +32,18 @@ public class Server {
     public void receiveRequest( Socket clientSoc ) throws IOException {
         InputStream is = clientSoc.getInputStream();
         DataInputStream dis = new DataInputStream( is );
-        String file_name = dis.readUTF();
-
-        System.out.println( "Downloading file "+ file_name + " ...");
-
-        File file = new File("D:\\Projects\\JavaProjects\\TP-Sockets\\src\\basic_file_server\\"+ file_name);
-        FileInputStream fis = new FileInputStream( file );
-        byte[] data = new byte[ fis.available() ];
-        fis.read( data );
-        fis.close();
-        sendReply( clientSoc, new String( data ) );
+        String request = dis.readUTF();
+        System.out.println( "Hello "+ request );
+        sendReply( clientSoc, request );
     }
 
     public void sendReply( Socket clientSoc, String body ) throws IOException {
         OutputStream os = clientSoc.getOutputStream();
         DataOutputStream dos = new DataOutputStream( os );
-        dos.writeUTF( body );
-        System.out.println( "Download Finished");
-        System.out.println( "File was send to client");
-        dos.close();
+        dos.writeUTF( "Hello "+ body);
     }
+
+
 
 
     public static void main( String[] argv){
