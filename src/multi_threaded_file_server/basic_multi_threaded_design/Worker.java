@@ -29,7 +29,7 @@ public class Worker extends Thread {
         try {
             boolean client_go ;
             while( true ){
-                client_go = receiveRequest();
+                client_go = receiveRequestFile();
                 if( client_go )
                     break;
             }
@@ -57,6 +57,36 @@ public class Worker extends Thread {
 
     public void sendReply(  String body ) throws IOException {
         this.dos.writeUTF( body );
+        //dos.close();
+    }
+
+    public boolean receiveRequestFile( ) throws IOException {
+
+        String file_name = this.dis.readUTF();
+        System.out.println( "The request was terminated by Worker "+ this.socClient.getPort() );
+        if( file_name.equals("-1") ){
+            sendReply(  "Good Bye" );
+            return true;
+        }
+
+        System.out.println( "Downloading file "+ file_name + " ...");
+
+        File file = new File("D:\\Projects\\JavaProjects\\TP-Sockets\\src\\multi_threaded_file_server\\basic_multi_threaded_design\\"+ file_name);
+        FileInputStream fis = new FileInputStream( file );
+        byte[] data = new byte[ fis.available() ];
+        fis.read( data );
+        //fis.close();
+        sendReplyFile( new String( data ) );
+        return false;
+    }
+
+    public void sendReplyFile( String body ) throws IOException {
+
+        this.dos.writeUTF( body );
+        if( !body.equals("-1") ){
+            System.out.println( "Download Finished");
+            System.out.println( "File was send to client");
+        }
         //dos.close();
     }
 }

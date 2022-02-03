@@ -1,10 +1,6 @@
 package multi_threaded_file_server.pool_based_multi_threaded_design.prodcons.v2;
 
-
-import multi_threaded_file_server.pool_based_multi_threaded_design.prodcons.IProdConsBuffer;
-import multi_threaded_file_server.pool_based_multi_threaded_design.prodcons.Message;
 import multi_threaded_file_server.pool_based_multi_threaded_design.prodcons.XMLParameters;
-
 import java.net.Socket;
 
 public class ProdConsBuffer {
@@ -58,7 +54,7 @@ public class ProdConsBuffer {
         totmsg++;
         notFull--;
         notEmpty++;
-        System.out.println("Un message produit par le Thread : " + socket.getPort() );
+        //System.out.println("Un message produit par le Thread : " + socket.getPort() );
          
         notifyAll();
     }
@@ -87,25 +83,10 @@ public class ProdConsBuffer {
         nbConsDone++;
         notFull++;
         
-        System.out.println("Un message consommé, messages disponibles : " + nmsg() + ", total produit : "+totmsg);
+        //System.out.println("Un message consommé, messages disponibles : " + nmsg() + ", total produit : "+totmsg);
         
         notifyAll();
        
         return socket;
-    }
-
-
-    public int nmsg() {
-        return (totmsg - msgcons);
-    }
-
-
-    public int totmsg() {
-        return totmsg;
-    } 
-    
-    public synchronized void producerDone(){
-        nbProdDone++;
-        notifyAll();
     }
 }

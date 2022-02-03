@@ -4,11 +4,19 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
+
+/**
+ * Ici on effectue une connexion pour un ensemble de requete
+ */
 public class Client {
 
     String serverHost ;
     int serverPort;
     Socket serverSoc ;
+    InputStream is;
+    OutputStream os;
+    DataOutputStream dos;
+    DataInputStream dis;
 
     public Client(String serverHost, int serverPort ) {
         this.serverHost = serverHost;
@@ -18,6 +26,10 @@ public class Client {
     public void connectToServer() throws IOException {
         try {
             this.serverSoc = new Socket( serverHost, serverPort );
+            this.is = this.serverSoc.getInputStream();
+            this.os = this.serverSoc.getOutputStream();
+            this.dos = new DataOutputStream( this. os );
+            this.dis = new DataInputStream( this.is );
         } catch (IOException e) {
             throw new IOException("Connection Failed");
         }
@@ -25,18 +37,38 @@ public class Client {
     }
 
     public void sendRequest(String body) throws IOException {
-        OutputStream os = serverSoc.getOutputStream();
-        DataOutputStream dos = new DataOutputStream( os );
-        dos.writeUTF( body );
+
+        this.dos.writeUTF( body );
         //dos.close();
         receiveReply();
     }
 
     public void receiveReply() throws IOException {
-        InputStream is = serverSoc.getInputStream();
-        DataInputStream dis = new DataInputStream( is );
-        String replyServer = dis.readUTF();
+
+        String replyServer = this.dis.readUTF();
         System.out.println( replyServer );
+        //dis.close();
+    }
+
+    public void sendRequestFile(String body) throws IOException {
+
+        this.dos.writeUTF( body );
+        receiveReplyFile( body );
+        //dos.close();
+    }
+
+    public void receiveReplyFile( String fileName ) throws IOException {
+        String data = this.dis.readUTF();
+
+        if( fileName.equals( "-1") ){
+            System.out.println( data );
+            return;
+        }
+        File file = new File( fileName );
+        FileOutputStream fos = new FileOutputStream( file );
+        fos.write( data.getBytes() );
+        System.out.println( "Download File Success" );
+        //fos.close();
         //dis.close();
     }
 
@@ -44,14 +76,13 @@ public class Client {
         Client client = new Client("10.188.207.110", 4320);
         try {
             client.connectToServer();
-            String want_to_send_request = "0";
             String request = null;
             Scanner sc = new Scanner( System.in );
             do {
                 System.out.println( "Press -1 to abandon or 0 to continue");
                 System.out.println( "Enter A Request : ");
                 request = sc.nextLine();
-                client.sendRequest( request );
+                client.sendRequestFile( request );
             }while (!request.equals("-1"));
             client.serverSoc.close();
         } catch (IOException e) {
