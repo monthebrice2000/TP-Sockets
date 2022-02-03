@@ -1,4 +1,4 @@
-package multi_threaded_file_server.basic_multi_threaded_design;
+package multi_threaded_file_server.basic_multi_threaded_design.thread_per_request;
 
 import java.io.*;
 import java.net.Socket;

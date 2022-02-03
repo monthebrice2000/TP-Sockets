@@ -45,7 +45,7 @@ public class Client {
 
 
     public static void main( String[] argv ) throws IOException {
-        Client client = new Client("10.188.207.110", 4320);
+        Client client = new Client("localhost", 4320);
         try {
             client.connectToServer();
             client.sendRequest( "index.txt");

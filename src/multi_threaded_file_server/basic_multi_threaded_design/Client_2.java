@@ -72,16 +72,16 @@ public class Client_2 {
     }
 
     public static void main( String[] argv ) throws IOException {
-        Client_2 client = new Client_2("10.188.207.110", 4320);
+        Client_2 client = new Client_2("localhost", 4320);
         try {
             String request = null;
             Scanner sc = new Scanner( System.in );
             do {
                 client.connectToServer();
-                System.out.println( "Press -1 to abandon or another to continue");
+                System.out.println( "Press -1 to abandon or index.txt to download file");
                 System.out.println( "Enter A Request : ");
                 request = sc.nextLine();
-                client.sendRequestFile( request );
+                client.sendRequestFile( request.trim() );
                 client.serverSoc.close();
             }while (!request.equals("-1"));
         } catch (IOException e) {

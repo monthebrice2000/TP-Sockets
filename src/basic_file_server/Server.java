@@ -33,9 +33,7 @@ public class Server {
         InputStream is = clientSoc.getInputStream();
         DataInputStream dis = new DataInputStream( is );
         String file_name = dis.readUTF();
-
         System.out.println( "Downloading file "+ file_name + " ...");
-
         File file = new File("D:\\Projects\\JavaProjects\\TP-Sockets\\src\\basic_file_server\\"+ file_name);
         FileInputStream fis = new FileInputStream( file );
         byte[] data = new byte[ fis.available() ];

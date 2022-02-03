@@ -1,4 +1,4 @@
-package multi_threaded_file_server.basic_multi_threaded_design;
+package multi_threaded_file_server.basic_multi_threaded_design.thread_per_request;
 
 import java.io.*;
 import java.net.Socket;
@@ -73,16 +73,16 @@ public class Client {
     }
 
     public static void main( String[] argv ) throws IOException {
-        Client client = new Client("10.188.207.110", 4320);
+        Client client = new Client("localhost", 4320);
         try {
             client.connectToServer();
             String request = null;
             Scanner sc = new Scanner( System.in );
             do {
-                System.out.println( "Press -1 to abandon or 0 to continue");
+                System.out.println( "Press -1 to abandon or index.txt to download file");
                 System.out.println( "Enter A Request : ");
                 request = sc.nextLine();
-                client.sendRequestFile( request );
+                client.sendRequestFile( request.trim() );
             }while (!request.equals("-1"));
             client.serverSoc.close();
         } catch (IOException e) {
