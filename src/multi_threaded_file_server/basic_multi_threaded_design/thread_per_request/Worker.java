@@ -71,7 +71,7 @@ public class Worker extends Thread {
 
         System.out.println( "Downloading file "+ file_name + " ...");
 
-        File file = new File("D:\\Projects\\JavaProjects\\TP-Sockets\\src\\multi_threaded_file_server\\basic_multi_threaded_design\\"+ file_name);
+        File file = new File("D:\\Projects\\JavaProjects\\TP-Sockets\\src\\multi_threaded_file_server\\basic_multi_threaded_design\\thread_per_request\\"+ file_name);
         FileInputStream fis = new FileInputStream( file );
         byte[] data = new byte[ fis.available() ];
         fis.read( data );
